@@ -64,7 +64,6 @@ class Board():
         for i in range(0,7):
             for z in range(1,6,5):
                     coords_to_check = (i,z)
-                    #print(coords_to_check)
                     if self.board_dict[coords_to_check] == 'red':
                         count_red += 1
                         if count_red == 4:
@@ -76,7 +75,6 @@ class Board():
         for i in range(0,7):
             for z in range(1,6,5):
                     coords_to_check = (i,z)
-                    #print(coords_to_check)
                     if self.board_dict[coords_to_check] == 'yellow':
                         count_yellow += 1
                         if count_yellow == 4:
