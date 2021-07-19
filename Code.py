@@ -35,6 +35,9 @@ class Board():
 
 
     def win_checker(self):
+
+        #Vertical Logic
+
         coords_to_iterate = list(self.board_dict.keys())
         count_red = 0
         count_yellow = 0 
@@ -56,29 +59,54 @@ class Board():
             else:
                 count_yellow = 0 
 
+            
+        #Horizonatal Logic
+        for i in range(0,7):
+            for z in range(1,6,5):
+                    coords_to_check = (i,z)
+
+                    print(coords_to_check)
+                    if self.board_dict[coords_to_check] == 'red':
+                        count_red += 1
+                        if count_red == 4:
+                            red_won = 'Red Wins!'
+                            return red_won
+                    else:
+                        count_red = 0 
+
+        for i in range(0,7):
+            for z in range(1,6,5):
+                    coords_to_check = (i,z)
+                    print(coords_to_check)
+                    if self.board_dict[coords_to_check] == 'yellow':
+                        count_yellow += 1
+                        if count_yellow == 4:
+                            yellow_won = 'Yellow Wins!'
+                            return yellow_won
+                    else:
+                        yellow_red = 0 
+        
+        #45 degree logic 
+
+
+ 
 
 
         
-            
-            
-
-            
-            
-            
-
         
+
+
 
 
 
 
 new_game = Board()
 new_game.board()
-#z = new_game.piece_drop(1, 2, 'red')
-#print(z)
+
 
 x = None
 while x != 'done':
-    x = input("Please type 'done' to end game ")
+    # x = input("Please type 'done' to end game ")
     board_column = int(input('Please input a column number from (0-6) '))
     row_location = int(input('Please input a row number (1-6) '))
 
