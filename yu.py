@@ -24,12 +24,15 @@ class Board():
         
         
         
-        for i in reversed(range(1,7)):
+        for i in (range(1,7)):
+
             if self.board_dict[(board_column, i)] == '':
-                self.board_dict[(board_column, i)] = ''
-            else:
                 self.board_dict[(board_column, i)] = color
                 print(self.board_dict)
+                break
+                
+
+           
                 
         
         
@@ -43,15 +46,25 @@ class Board():
         count_red = 0
         count_yellow = 0 
         for i in range(len(self.board_game)):
+            
+            if coords_to_iterate[i-1][0] < coords_to_iterate[i][0]:
+                count_red = 0 
+
             if self.board_dict[coords_to_iterate[i]] == 'red':
                 count_red += 1
                 if count_red == 4:
                     red_won = 'Red Wins!'
                     return red_won
+
+            
             else:
                 count_red = 0 
 
         for i in range(len(self.board_game)):
+
+            if coords_to_iterate[i-1][0] < coords_to_iterate[i][0]:
+                count_yellow = 0 
+
             if self.board_dict[coords_to_iterate[i]] == 'yellow':
                 count_yellow += 1
                 if count_yellow == 4:
