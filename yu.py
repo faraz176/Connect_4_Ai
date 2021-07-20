@@ -4,6 +4,9 @@ class Board():
     def __init__(self):
         self.board_game = []
         self.board_dict = {}
+        self.last_dropped = ''
+        self.count_red_variable = 1
+        self.count_yellow_variable = 1
 
 
     def board(self):
@@ -28,6 +31,7 @@ class Board():
 
             if self.board_dict[(board_column, i)] == '':
                 self.board_dict[(board_column, i)] = color
+                self.last_dropped = (board_column, i)
                 print(self.board_dict)
                 break
                 
@@ -93,48 +97,76 @@ class Board():
                             yellow_won = 'Yellow Wins!'
                             return yellow_won
                     else:
-                        yellow_red = 0 
+                        count_yellow = 0 
         
         #45 degree logic 
+        piece_dropped = self.last_dropped 
+        #for i in range(1,5):
+        try:
+            if self.board_dict[(piece_dropped[0]-1, piece_dropped[1]-1)] == 'red':
+                
+                self.count_red_variable += 1
+                print("red: " + str(self.count_red_variable))
+                if self.count_red_variable == 4:
+                    red_won = 'Red Won'
+                    return red_won
+           
+                
+        except KeyError:
+            None
 
+        piece_dropped = self.last_dropped
+        #for i in range(1,5):
+        try:
+            if self.board_dict[(piece_dropped[0]-i, piece_dropped[1]-i)] == 'yellow':
+                self.count_yellow_variable += 1
+                print("yellow: "+ str(self.count_yellow_variable))
+                if self.count_yellow_variable == 4:
+                    yellow_won = 'Yellow Won'
+                    return yellow_won
+            
+            
+        except KeyError:
+            None
+            
 
  
 
 
         
-        
-
-
-
-
-
+    
 
 new_game = Board()
 new_game.board()
 
-turn = 0 
+#turn = 0 
 x = None
 while x != 'done':
      
-    if turn == 0:
+    # if turn == 0:
+    #     board_column = int(input('Please input a column number from (0-6) '))
+    #     color = input('please input a color red or yellow ')
+    #     new_game.piece_drop(board_column, color)
+    #     turn += 1
+    
         board_column = int(input('Please input a column number from (0-6) '))
         color = input('please input a color red or yellow ')
         new_game.piece_drop(board_column, color)
-        turn += 1
-    else:
-        choose = [0,1,2,3,4,5,6]
-        color_ai = 'yellow'
-        ai_column = r.choice(choose)
-        board_column = ai_column
-        color = color_ai
-        new_game.piece_drop(board_column, color)
-        turn = 0 
+        #turn += 1
+    # else:
+    #     choose = [0,1,2,3,4,5,6]
+    #     color_ai = 'yellow'
+    #     ai_column = r.choice(choose)
+    #     board_column = ai_column
+    #     color = color_ai
+    #     new_game.piece_drop(board_column, color)
+    #     turn = 0 
 
 
-    vz = new_game.win_checker()
-    if vz != None:
-        print(vz)
-        x = 'done'
+        vz = new_game.win_checker()
+        if vz != None:
+            print(vz)
+            x = 'done'
     
 
 
