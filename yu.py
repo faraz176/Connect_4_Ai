@@ -1,4 +1,4 @@
-
+import random as r 
 
 class Board():
     def __init__(self):
@@ -32,8 +32,6 @@ class Board():
                 break
                 
 
-           
-                
         
         
 
@@ -114,12 +112,24 @@ class Board():
 new_game = Board()
 new_game.board()
 
-
+turn = 0 
 x = None
 while x != 'done':
-    board_column = int(input('Please input a column number from (0-6) '))
-    color = input('please input a color red or yellow ')
-    new_game.piece_drop(board_column, color)
+     
+    if turn == 0:
+        board_column = int(input('Please input a column number from (0-6) '))
+        color = input('please input a color red or yellow ')
+        new_game.piece_drop(board_column, color)
+        turn += 1
+    else:
+        choose = [0,1,2,3,4,5,6]
+        color_ai = 'yellow'
+        ai_column = r.choice(choose)
+        board_column = ai_column
+        color = color_ai
+        new_game.piece_drop(board_column, color)
+        turn = 0 
+
 
     vz = new_game.win_checker()
     if vz != None:
