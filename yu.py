@@ -1,8 +1,11 @@
 import random as r 
 
 class Board():
-    def __init__(self):
+    def __init__(self, color1,):
+        self.color_player_1 = color1
+        self.turn = 0
         self.board_game = []
+        self.moves_availiable = []
         self.board_dict = {}
         self.last_dropped = ''
         self.count_red_variable = 1
@@ -22,24 +25,51 @@ class Board():
         
         
 
-    def piece_drop(self, board_column, color):
+    def piece_drop(self, board_column):
         #coord = (board_column,row_location)
         
         
         
         for i in (range(1,7)):
+            if self.turn == 0:
 
-            if self.board_dict[(board_column, i)] == '':
-                self.board_dict[(board_column, i)] = color
-                self.last_dropped = (board_column, i)
-                print(self.board_dict)
-                break
+                if self.board_dict[(board_column, i)] == '':
+                    self.board_dict[(board_column, i)] = self.color_player_1
+                    self.last_dropped = (board_column, i)
+                    print(self.board_dict)
+                    self.turn +=1
+                    break
+            else:
+                if self.color_player_1 == 'red':
+                    color_2 = 'yellow'
+                if self.board_dict[(board_column, i)] == '':
+                    self.board_dict[(board_column, i)] = color_2
+                    self.last_dropped = (board_column, i)
+                    print(self.board_dict)
+                    self.turn = 0
+                    break
+
                 
 
-        
-        
+   
 
+                
+    def availiable_moves(self):
+        moves = []
 
+        for i in range(0,7):
+            for z in range(1,7):
+
+                
+                if self.board_dict[(i,z)] == '':
+                    space = (i,z)
+                    moves.append(space)
+                    break
+        return moves
+    
+    
+              
+        
     def win_checker(self):
 
         #Vertical Logic
@@ -101,7 +131,6 @@ class Board():
         
         #45 degree logic 
         piece_dropped = self.last_dropped 
-        #for i in range(1,5):
         try:
             if self.board_dict[(piece_dropped[0]-1, piece_dropped[1]-1)] == 'red':
                 
@@ -116,9 +145,8 @@ class Board():
             None
 
         piece_dropped = self.last_dropped
-        #for i in range(1,5):
         try:
-            if self.board_dict[(piece_dropped[0]-i, piece_dropped[1]-i)] == 'yellow':
+            if self.board_dict[(piece_dropped[0]-1, piece_dropped[1]-1)] == 'yellow':
                 self.count_yellow_variable += 1
                 print("yellow: "+ str(self.count_yellow_variable))
                 if self.count_yellow_variable == 4:
@@ -128,6 +156,11 @@ class Board():
             
         except KeyError:
             None
+
+    def minimax(self, depth, maximizingPlayer):
+        return None
+
+
             
 
  
@@ -136,7 +169,7 @@ class Board():
         
     
 
-new_game = Board()
+new_game = Board('red')
 new_game.board()
 
 #turn = 0 
@@ -150,8 +183,10 @@ while x != 'done':
     #     turn += 1
     
         board_column = int(input('Please input a column number from (0-6) '))
-        color = input('please input a color red or yellow ')
-        new_game.piece_drop(board_column, color)
+        #color = input('please input a color red or yellow ')
+        new_game.piece_drop(board_column)
+        f = new_game.availiable_moves()
+        print(f)
         #turn += 1
     # else:
     #     choose = [0,1,2,3,4,5,6]
