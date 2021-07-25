@@ -11,7 +11,7 @@ class Board():
         self.color_player_2 = ''
         self.turn = 0
         self.board_game = []
-        self.moves_availiable = []
+        self.moves_ready = []
         self.board_dict = {}
         self.last_dropped = ''
         self.count_red_variable = 1
@@ -30,11 +30,7 @@ class Board():
             self.board_dict[self.board_game[i]] = '' 
 
 
-    
-    # def show_board(self):
-    #     for i in range(1,7):
-    #         for z in range(0,7):
-    #             self.looking_board.append([])
+
 
 
     def weird_board(self):
@@ -42,10 +38,17 @@ class Board():
             for i in range(1,7):
                 for z in range(0,7):
                     self.looking_board.append([])
-        
-        #Mapping
+
+                        
             for i in range(len(self.board_game)):
                 self.looking_board[i] = self.board_game[i]
+
+
+    
+    def board_look(self):
+        
+        #Mapping
+
 
         
             for i in range(len(self.board_game)):
@@ -78,7 +81,7 @@ class Board():
                     self.board_dict[(board_column, i)] = self.color_player_1
                     self.color_player_2 = self.color_player_1
                     self.last_dropped = (board_column, i)
-                    print(self.board_dict)
+                    #print(self.board_dict)
                     self.turn +=1
                     break
             else:
@@ -88,7 +91,7 @@ class Board():
                     self.board_dict[(board_column, i)] = color_2
                     self.color_player_2 = color_2
                     self.last_dropped = (board_column, i)
-                    print(self.board_dict)
+                    #print(self.board_dict)
                     self.turn = 0
                     break
 
@@ -98,7 +101,7 @@ class Board():
 
                 
     def availiable_moves(self):
-        moves = []
+        self.moves_ready = []
 
         for i in range(0,7):
             for z in range(1,7):
@@ -106,9 +109,10 @@ class Board():
                 
                 if self.board_dict[(i,z)] == '':
                     space = (i,z)
-                    moves.append(space)
+                    self.moves_ready.append(space)
                     break
-        return moves
+        return self.moves_ready
+        
     
     
               
@@ -200,43 +204,94 @@ class Board():
         except KeyError:
             None
 
-    def minimax(self):
-        if self.turn == 0:
-            maximizingPlayer = self.color_player_1
+    # def minimax(self):
+    #     if self.turn == 0:
+    #         maximizingPlayer = self.color_player_1
+    #     if self.turn == 1:
+    #         maximizingPlayer = 'yellow'
+    #     other_player = 'yellow'
+        
+    #     if self.win_checker() == other_player:
+    #         return {'position': None, 'score': 1 * (len(self.availiable_moves) + 1) if other_player == maximizingPlayer else -1 * (
+    #                     len(self.availiable_moves()) + 1)}
+
+    #     elif not self.availiable_moves():
+    #         return{'position': None, 'score':0}
+
+    #     if self.color_player_1 == maximizingPlayer:
+    #         best = {'position': None, 'score': -math.inf}
+        
+    #     else:
+    #         best = {'position': None, 'score': math.inf}
+
+    #     for possible_move in self.availiable_moves():
+    #         self.piece_drop(possible_move)
+    #         sim_score = self.minimax(self, other_player)
+
+
+    #         self.piece_drop[possible_move] = ' '
+    #         sim_score['position'] = possible_move
+
+    #         if self.color_player_1 == maximizingPlayer:
+    #             if sim_score['score'] > best['score']:
+    #                 best = sim_score
+
+    #         else:
+    #             if sim_score['score'] < best['score']:
+    #                 best = sim_score
+        
+    #     return best
+
+
+    def AI(self):
         if self.turn == 1:
-            maximizingPlayer = 'yellow'
-        other_player = 'yellow'
+            moves_to_consider = []
+            for i in self.moves_ready:
+                try:
+                    if self.board_dict[i[0], i[1] - 1] == 'yellow':
+                        move_possible_1 = 0.8
+                        moves_to_consider.append((i, move_possible_1))
+                
+                    if self.board_dict[i[0] - 1, i[1]] == 'yellow':
+                        move_possible_2 = 0.8
+                        moves_to_consider.append((i, move_possible_2)) 
+
+                    if self.board_dict[i[0] -1,  i[1] -1] == 'yellow':
+                        move_possible_3 = 0.8
+                        moves_to_consider.append((i, move_possible_3))
+
+                    if self.board_dict[i[0], i[1] - 1] == 'red':
+                        move_possible_4 = 0.8
+                        moves_to_consider.append((i, move_possible_4))
+                
+                    if self.board_dict[i[0] - 1, i[1]] == 'red':
+                        move_possible_5 = 0.8
+                        moves_to_consider.append((i, move_possible_5)) 
+
+                    if self.board_dict[i[0] -1,  i[1] -1] == 'red':
+                        move_possible_6 = 0.8
+                        moves_to_consider.append((i, move_possible_6))
+
+                except KeyError:
+                    None
+
+
+                best_move = ''
+                biggest_move = moves_to_consider[0]
+                for i in range(len(moves_to_consider)):
+                    if moves_to_consider[i][1] > biggest_move:
+                        biggest_move = moves_to_consider[i][1]
+                        best_move = moves_to_consider[i][0]
+
+            return best_move
         
-        if self.win_checker() == other_player:
-            return {'position': None, 'score': 1 * (len(self.availiable_moves) + 1) if other_player == maximizingPlayer else -1 * (
-                        len(self.availiable_moves()) + 1)}
-
-        elif not self.availiable_moves():
-            return{'position': None, 'score':0}
-
-        if self.color_player_1 == maximizingPlayer:
-            best = {'position': None, 'score': -math.inf}
-        
-        else:
-            best = {'position': None, 'score': math.inf}
-
-        for possible_move in self.availiable_moves():
-            self.piece_drop(possible_move)
-            sim_score = self.minimax(self, other_player)
 
 
-            self.piece_drop[possible_move] = ' '
-            sim_score['position'] = possible_move
 
-            if self.color_player_1 == maximizingPlayer:
-                if sim_score['score'] > best['score']:
-                    best = sim_score
 
-            else:
-                if sim_score['score'] < best['score']:
-                    best = sim_score
-        
-        return best
+                
+                
+
 
       
 
@@ -251,6 +306,7 @@ class Board():
 
 new_game = Board('red')
 new_game.board()
+new_game.weird_board()
 
 turn = 0 
 x = None
@@ -259,15 +315,22 @@ while x != 'done':
     if turn == 0:
         board_column = int(input('Please input a column number from (0-6) '))
         new_game.piece_drop(board_column)
-        new_game.weird_board()
+        new_game.board_look()
+        print(new_game.availiable_moves())
         turn += 1
 
              
         
     else:
+        #print(new_game.availiable_moves())
+        # print(new_game.turn)
+        new_game.AI()
         board_column = int(input('Please input a column number from (0-6) '))
-        new_game.piece_drop(board_column)
-        new_game.weird_board()
+        # AI_move = new_game.AI()
+        # column_AI = AI_move[0]
+        # new_game.piece_drop(board_column)
+        # new_game.board_look()
+        # print(new_game.availiable_moves())
         turn = 0 
     
 
