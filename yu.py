@@ -1,5 +1,5 @@
 import random as r 
-import math
+
 
 class Board():
     def __init__(self, color1,):
@@ -17,6 +17,7 @@ class Board():
         self.count_red_variable = 1
         self.count_yellow_variable = 1
         self.looking_board = cock
+        self.game_turn = 0 
 
 
     def board(self):
@@ -245,43 +246,56 @@ class Board():
 
     def AI(self):
         if self.turn == 1:
+
+
+            if self.game_turn == 0:
+                num_choose = r.randint(0,6)
+                best_move = num_choose
+                self.game_turn += 1
+                return best_move
+                
+
             moves_to_consider = []
             for i in self.moves_ready:
                 try:
+
                     if self.board_dict[i[0], i[1] - 1] == 'yellow':
                         move_possible_1 = 0.8
                         moves_to_consider.append((i, move_possible_1))
                 
-                    if self.board_dict[i[0] - 1, i[1]] == 'yellow':
+                    elif self.board_dict[i[0] - 1, i[1]] == 'yellow':
                         move_possible_2 = 0.8
                         moves_to_consider.append((i, move_possible_2)) 
 
-                    if self.board_dict[i[0] -1,  i[1] -1] == 'yellow':
+                    elif self.board_dict[i[0] -1,  i[1] -1] == 'yellow':
                         move_possible_3 = 0.8
                         moves_to_consider.append((i, move_possible_3))
 
-                    if self.board_dict[i[0], i[1] - 1] == 'red':
+                    elif self.board_dict[i[0], i[1] - 1] == 'red':
                         move_possible_4 = 0.8
                         moves_to_consider.append((i, move_possible_4))
                 
-                    if self.board_dict[i[0] - 1, i[1]] == 'red':
-                        move_possible_5 = 0.8
+                    elif self.board_dict[i[0] - 1, i[1]] == 'red':
+                        move_possible_5 = 0.6
                         moves_to_consider.append((i, move_possible_5)) 
 
-                    if self.board_dict[i[0] -1,  i[1] -1] == 'red':
-                        move_possible_6 = 0.8
+                    elif self.board_dict[i[0] -1,  i[1] -1] == 'red':
+                        move_possible_6 = 0.3
                         moves_to_consider.append((i, move_possible_6))
 
                 except KeyError:
                     None
 
+                   
 
-                best_move = ''
-                biggest_move = moves_to_consider[0]
-                for i in range(len(moves_to_consider)):
-                    if moves_to_consider[i][1] > biggest_move:
-                        biggest_move = moves_to_consider[i][1]
-                        best_move = moves_to_consider[i][0]
+
+            # best_move = ''
+            # biggest_move = moves_to_consider[0][1]
+            # for i in range(len(moves_to_consider)):
+            #     if moves_to_consider[i][1] > biggest_move:
+            #         biggest_move = moves_to_consider[i][1]
+            #         best_move = moves_to_consider[i][0]
+            best_move = moves_to_consider
 
             return best_move
         
@@ -324,8 +338,9 @@ while x != 'done':
     else:
         #print(new_game.availiable_moves())
         # print(new_game.turn)
-        new_game.AI()
-        board_column = int(input('Please input a column number from (0-6) '))
+        print(new_game.AI())
+
+        # board_column = int(input('Please input a column number from (0-6) '))
         # AI_move = new_game.AI()
         # column_AI = AI_move[0]
         # new_game.piece_drop(board_column)
